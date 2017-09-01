@@ -19,7 +19,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkForSessionInfo()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func checkForSessionInfo(){
+        let userDefaults = UserDefaults.standard
+        if let dictData = userDefaults.value(forKey: "sessionDetails") as? [String: Any]{
+            let storyboard = UIStoryboard(name:"Main", bundle: nil)
+            let profileVC = storyboard.instantiateViewController(withIdentifier: "profileVC") as! UserProfileViewController
+            let objUser = User(params: dictData["userDetails"] as? [String : Any] ?? [:], withToken:dictData["token"] as! String)
+            profileVC.user = objUser
+            self.navigationController?.pushViewController(profileVC, animated: false)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,6 +56,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func prepareSessionForUser(jsonString:[String:Any]){
+        let defaults = UserDefaults.standard
+        defaults.set(jsonString, forKey: "sessionInfo")
+    }
+    
     func sendLoginRequest(dictParams:[String:String]){
         if let urlString = URL(string: Services.wsBaseURL + Services.wsSignUP){
             var request = URLRequest(url: urlString)
@@ -60,15 +77,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     }else{
                         if data != nil {
                             if let jsonString = try? JSONSerialization.jsonObject(with: data!, options:    []) as! [String:Any] {
-                                print(jsonString)
-//                                let objUser = User(params: jsonString["userDetails"] as? [String : Any] ?? [:])
-//                                let storyboard = UIStoryboard(name: "Main", bundle:nil)
-//                                let profileVC = storyboard.instantiateViewController(withIdentifier: "profileVC") as! UserProfileViewController
-//                                self.navigationController?.pushViewController(profileVC, animated: true)
-//                                profileVC.user = objUser
+                                let status = jsonString["status"] as! String
+                                if status == "200" {
+                                    print(jsonString)
+                                    let objUser = User(params: jsonString["userDetails"] as? [String : Any] ?? [:], withToken:jsonString["token"] as! String)
+                                    let storyboard = UIStoryboard(name: "Main", bundle:nil)
+                                    let profileVC = storyboard.instantiateViewController(withIdentifier: "profileVC") as! UserProfileViewController
+                                    profileVC.user = objUser
+                                    self.prepareSessionForUser(jsonString: jsonString)
+                                    DispatchQueue.main.async {
+                                        self.navigationController?.pushViewController(profileVC, animated: true)
+                                    }
+                                }
+                            }else{
+                                print("no printable data")
                             }
-                        }else{
-                            print("no printable data")
                         }
                     }
                 })
@@ -76,9 +99,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
         }
         
-        func pushToProfileViewControllerWithUser(user:User!){
-            
-        }
+        
+
         
         //        do {
 //        }catch let error {

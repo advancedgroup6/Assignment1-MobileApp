@@ -17,6 +17,7 @@
 		968DFD5B1F57E042001A8213 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968DFD5A1F57E042001A8213 /* Services.swift */; };
 		968DFD5D1F57EA73001A8213 /* WSSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968DFD5C1F57EA73001A8213 /* WSSignup.swift */; };
 		968DFD5F1F57EE6E001A8213 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968DFD5E1F57EE6E001A8213 /* User.swift */; };
+		968DFD611F58DAB7001A8213 /* UpdateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968DFD601F58DAB7001A8213 /* UpdateProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		968DFD5A1F57E042001A8213 /* Services.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		968DFD5C1F57EA73001A8213 /* WSSignup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WSSignup.swift; sourceTree = "<group>"; };
 		968DFD5E1F57EE6E001A8213 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		968DFD601F58DAB7001A8213 /* UpdateProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				968DFD461F5686EC001A8213 /* ViewController.swift */,
 				968DFD581F57D97B001A8213 /* UserProfileViewController.swift */,
 				968DFD561F57D957001A8213 /* LoginViewController.swift */,
+				968DFD601F58DAB7001A8213 /* UpdateProfileViewController.swift */,
 				968DFD481F5686EC001A8213 /* Main.storyboard */,
 				968DFD4B1F5686EC001A8213 /* Assets.xcassets */,
 				968DFD4D1F5686EC001A8213 /* LaunchScreen.storyboard */,
@@ -156,6 +159,7 @@
 				968DFD571F57D957001A8213 /* LoginViewController.swift in Sources */,
 				968DFD591F57D97B001A8213 /* UserProfileViewController.swift in Sources */,
 				968DFD471F5686EC001A8213 /* ViewController.swift in Sources */,
+				968DFD611F58DAB7001A8213 /* UpdateProfileViewController.swift in Sources */,
 				968DFD451F5686EC001A8213 /* AppDelegate.swift in Sources */,
 				968DFD5F1F57EE6E001A8213 /* User.swift in Sources */,
 			);

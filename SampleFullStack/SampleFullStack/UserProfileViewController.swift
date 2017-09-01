@@ -18,22 +18,32 @@ class UserProfileViewController: UIViewController {
     var user:User?
     override func viewDidLoad() {
         super.viewDidLoad()
-        additionalUISetup()
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationItem.leftBarButtonItem = nil
+        self.navigationController?.navigationItem.backBarButtonItem = nil
+        additionalUISetup()
+    }
+    
     func additionalUISetup(){
         lblName.text = user?.strName
         lblEmailID.text = user?.strEmailID
         lblAddress.text = user?.strAddress
         lblPhoneNo.text = user?.strPhoneNo
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let updateProfileVC = segue.destination as! UpdateProfileViewController
+        updateProfileVC.objUser = user
+    }
     /*
     // MARK: - Navigation
 

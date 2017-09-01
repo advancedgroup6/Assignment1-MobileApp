@@ -14,19 +14,36 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var txtFieldPassword: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.checkForSessionInfo()
         // Do any additional setup after loading the view.
     }
 
     
-    
+    func checkForSessionInfo(){
+        let userDefaults = UserDefaults.standard
+        if let dictData = userDefaults.value(forKey: "sessionInfo") as? [String: Any]{
+            let storyboard = UIStoryboard(name:"Main", bundle: nil)
+            let profileVC = storyboard.instantiateViewController(withIdentifier: "profileVC") as! UserProfileViewController
+            let objUser = User(params: dictData["userDetails"] as? [String : Any] ?? [:], withToken:dictData["token"] as! String)
+            profileVC.user = objUser
+            self.navigationController?.pushViewController(profileVC, animated: false)
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     private func validFields() -> Bool{
-        return true
+        if self.txtFieldEmailID.text?.characters.count != 0 && self.txtFieldPassword.text?.characters.count != 0 {
+            
+            return true
+        }
+        displayAlert(message: "Please enter your credentials")
+        return false
     }
+    
+   
     
     @IBAction func btnSubmitAction(_ sender: Any) {
         if validFields() {
@@ -47,10 +64,28 @@ class LoginViewController: UIViewController {
                 let task = session.dataTask(with:request, completionHandler: {(data, response, error)in
                     if error != nil {
                         print(error?.localizedDescription ?? "Error in login")
+                        DispatchQueue.main.async {
+                            self.displayAlert(message: "Authentication failure")
+                        }
                     }else{
                         if data != nil {
-                            if let jsonResponse = try? JSONSerialization.jsonObject(with: data!, options: []) as! [String:Any]{
-                                print(jsonResponse)
+                            if let jsonString = try? JSONSerialization.jsonObject(with: data!, options: []) as! [String:Any]{
+                                let status = jsonString["status"] as! String
+                                if status == "200" {
+                                    print(jsonString)
+                                    let objUser = User(params: jsonString["userDetails"] as? [String : Any] ?? [:], withToken:jsonString["token"] as! String)
+                                    let storyboard = UIStoryboard(name: "Main", bundle:nil)
+                                    let profileVC = storyboard.instantiateViewController(withIdentifier: "profileVC") as! UserProfileViewController
+                                    profileVC.user = objUser
+                                    self.prepareSessionForUser(jsonString:jsonString)
+                                    DispatchQueue.main.async {
+                                        self.navigationController?.pushViewController(profileVC, animated: false)
+                                    }
+                                }else{
+                                    DispatchQueue.main.async {
+                                        self.displayAlert(message: "Authentication failure")
+                                    }
+                                }
                             }
                         }
                     }
@@ -60,8 +95,16 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func prepareSessionForUser(){
-        
+    func displayAlert(message:String){
+        let myAlert = UIAlertController(title:"Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title:"OK", style:UIAlertActionStyle.default, handler:nil)
+        myAlert.addAction(okAction)
+        self.present(myAlert, animated: true, completion: nil)
+    }
+    
+    func prepareSessionForUser(jsonString:[String:Any]){
+        let defaults = UserDefaults.standard
+        defaults.set(jsonString, forKey: "sessionInfo")
     }
 
     /*

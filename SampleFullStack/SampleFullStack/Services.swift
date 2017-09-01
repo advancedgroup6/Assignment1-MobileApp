@@ -14,4 +14,5 @@ class Services: NSObject {
     static let wsSignUP = "signup"
     static let wsLogin = "login"
     static let wsLogout = "logout"
+    static let wsUpdateProfile = "updateProfile"
 }

@@ -14,13 +14,15 @@ class User: NSObject {
     var strAddress:String?
     var strPhoneNo:String?
     var strPassword:String?
+    var strSessionToken:String?
   
-    init(params:[String:Any]){
+    init(params:[String:Any], withToken strToken:String){
         super.init()
         strName = params["name"] as? String ?? ""
         strEmailID = params["emailID"] as? String ?? ""
         strAddress = params["address"] as? String ?? ""
         strPhoneNo = params["phoneNo"] as? String ?? ""
         strPassword = params["password"] as? String ?? ""
+        strSessionToken = strToken
     }
 }
