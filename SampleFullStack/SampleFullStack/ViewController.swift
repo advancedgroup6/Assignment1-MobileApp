@@ -19,9 +19,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        additionalUISetup()
         checkForSessionInfo()
         // Do any additional setup after loading the view, typically from a nib.
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        txtFieldPassword.text = ""
+        txtFieldEmailID.text = ""
+        txtFieldPhoneNo.text = ""
+        txtFieldName.text = ""
+        txtFieldAddress.text = ""
+        
+    }
+    
+    func additionalUISetup(){
+        txtFieldName.becomeFirstResponder()
+    }
+
     
     func checkForSessionInfo(){
         let userDefaults = UserDefaults.standard
@@ -41,6 +57,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     
     private func validFields() -> Bool{
+        if txtFieldName.text?.characters.count == 0 || txtFieldEmailID.text?.characters.count == 0 || txtFieldAddress.text?.characters.count == 0 || txtFieldPhoneNo.text?.characters.count == 0 || txtFieldPassword.text?.characters.count == 0 {
+            return false
+        }
         return true
     }
     
@@ -52,7 +71,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                         "phoneNo":txtFieldPhoneNo.text!,
                         "address" :txtFieldAddress.text!,
                         "password":txtFieldPassword.text!]
-            sendLoginRequest(dictParams: dict)
+            sendSignupRequest(dictParams: dict)
         }
     }
     
@@ -61,7 +80,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
         defaults.set(jsonString, forKey: "sessionInfo")
     }
     
-    func sendLoginRequest(dictParams:[String:String]){
+    func displayAlert(message:String){
+        let myAlert = UIAlertController(title:"Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title:"OK", style:UIAlertActionStyle.default, handler:nil)
+        myAlert.addAction(okAction)
+        self.present(myAlert, animated: true, completion: nil)
+    }
+    
+    func sendSignupRequest(dictParams:[String:String]){
         if let urlString = URL(string: Services.wsBaseURL + Services.wsSignUP){
             var request = URLRequest(url: urlString)
             let jsonData = try? JSONSerialization.data(withJSONObject: dictParams, options: .prettyPrinted)
@@ -90,6 +116,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
                                     }
                                 }
                             }else{
+                                DispatchQueue.main.async {
+                                    self.displayAlert(message: "Signup failed. Please try again later.")
+                                }
                                 print("no printable data")
                             }
                         }

@@ -17,7 +17,20 @@ class LoginViewController: UIViewController {
         self.checkForSessionInfo()
         // Do any additional setup after loading the view.
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        additionalUISetup()
+    }
+    
+    func additionalUISetup(){
+        txtFieldEmailID.becomeFirstResponder()
+    }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        txtFieldEmailID.text = ""
+        txtFieldPassword.text = ""
+    }
     
     func checkForSessionInfo(){
         let userDefaults = UserDefaults.standard
@@ -79,7 +92,7 @@ class LoginViewController: UIViewController {
                                     profileVC.user = objUser
                                     self.prepareSessionForUser(jsonString:jsonString)
                                     DispatchQueue.main.async {
-                                        self.navigationController?.pushViewController(profileVC, animated: false)
+                                        self.navigationController?.pushViewController(profileVC, animated: true)
                                     }
                                 }else{
                                     DispatchQueue.main.async {

@@ -68,7 +68,7 @@ class UpdateProfileViewController: UIViewController {
     
     @IBAction func btnSaveAction(_ sender: Any) {
         if validFields(){
-            updateProfileWithParams(dict: ["name":txtFieldName.text!, "address":txtFieldAddess.text!, "phoneNo":txtFieldPhoneNo.text!])
+            updateProfileWithParams(dict: ["name":txtFieldName.text!, "address":txtFieldAddess.text!, "phoneNo":txtFieldPhoneNo.text!,"emailID":objUser.strEmailID!])
         }
     }
     

@@ -21,10 +21,15 @@ class UserProfileViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    @IBAction func btnLogoutAction(_ sender: Any) {
+        let userDefaults = UserDefaults.standard
+        userDefaults.removeObject(forKey: "sessionInfo")
+        userDefaults.synchronize()
+        self.navigationController?.popToRootViewController(animated: false)
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationItem.leftBarButtonItem = nil
-        self.navigationController?.navigationItem.backBarButtonItem = nil
+        self.navigationItem.setHidesBackButton(true, animated: false)
         additionalUISetup()
     }
     
