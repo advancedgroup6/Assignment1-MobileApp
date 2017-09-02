@@ -72,6 +72,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
                         "address" :txtFieldAddress.text!,
                         "password":txtFieldPassword.text!]
             sendSignupRequest(dictParams: dict)
+        }else{
+            displayAlert(message: "Please enter valid details.")
         }
     }
     
