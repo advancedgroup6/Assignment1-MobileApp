@@ -31,14 +31,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         txtFieldPhoneNo.text = ""
         txtFieldName.text = ""
         txtFieldAddress.text = ""
-        
     }
     
     func additionalUISetup(){
         txtFieldName.becomeFirstResponder()
-    }
+    }   
 
-    
     func checkForSessionInfo(){
         let userDefaults = UserDefaults.standard
         if let dictData = userDefaults.value(forKey: "sessionDetails") as? [String: Any]{
@@ -102,6 +100,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 let task = session.dataTask(with: request, completionHandler: {(data, response, error) in
                     if error != nil {
                         print(error?.localizedDescription ?? "Error getting data")
+                        self.displayAlert(message: "Couldnt signup, please try again.")
+
                     }else{
                         if data != nil {
                             if let jsonString = try? JSONSerialization.jsonObject(with: data!, options:    []) as! [String:Any] {
